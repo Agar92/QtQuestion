@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/rec">
-        <file>img/close.png</file>
-    </qresource>
-</RCC>
