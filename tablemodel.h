@@ -8,10 +8,9 @@ class TableModel : public QSqlRelationalTableModel
     Q_OBJECT
 
 public:
-    explicit TableModel(QObject *parent = nullptr, QSqlDatabase db = QSqlDatabase());
-
+    explicit TableModel(QObject *parent = nullptr);
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-
+    bool setData(const QModelIndex &index, const QVariant &value, int);
 };
 
 #endif // TABLEMODEL_H
