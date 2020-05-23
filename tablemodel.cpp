@@ -2,6 +2,14 @@
 
 TableModel::TableModel(QObject *parent) : QSqlRelationalTableModel(parent) {}
 
+Qt::ItemFlags TableModel::flags(const QModelIndex &index) const
+{
+    Qt::ItemFlags flags = QSqlQueryModel::flags(index);
+    if (index.column()>0 && index.column()<5)
+        flags |= Qt::ItemIsEditable;
+    return flags;
+}
+
 QVariant TableModel::data(const QModelIndex &index, int role) const
 {
     if(!index.isValid()) return QVariant();
@@ -72,19 +80,28 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
 
 bool TableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    if (index.column() < 1 || index.column() > 4) return false;
+    if(index.column() < 1 || index.column() > 4) return false;
     QModelIndex primaryKeyIndex = QSqlQueryModel::index(index.row(), 0);
     int id = data(primaryKeyIndex).toInt();
     clear();
 
-    bool ok;
+    bool ok = true;
+    if(index.column() == 1)
+        ok = setTitle(id, value.toString());
     /*
-    if (index.column() == 1) {
-        ok = setFirstName(id, value.toString());
-    } else {
+    else {
         ok = setLastName(id, value.toString());
     }
     refresh();
     */
     return ok;
+}
+
+bool TableModel::setTitle(int id, const QString &title)
+{
+    QSqlQuery query;
+    query.prepare("update books set title = ? where id = ?");
+    query.addBindValue(title);
+    query.addBindValue(id);
+    return query.exec();
 }

@@ -9,8 +9,13 @@ class TableModel : public QSqlRelationalTableModel
 
 public:
     explicit TableModel(QObject *parent = nullptr);
+
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     bool setData(const QModelIndex &index, const QVariant &value, int);
+
+    bool setTitle(int id, const QString &title);
+
 };
 
 #endif // TABLEMODEL_H
