@@ -16,6 +16,7 @@ public:
 
     bool setTitle(int id, const QString &title);
 
+    void refresh();
 };
 
 #endif // TABLEMODEL_H

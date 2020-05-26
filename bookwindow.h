@@ -6,6 +6,8 @@
 
 #include "ui_bookwindow.h"
 
+#include "tablemodel.h"
+
 
 class BookWindow: public QMainWindow
 {
@@ -19,7 +21,9 @@ private slots:
 private:
     void showError(const QSqlError &err);
     Ui::BookWindow ui;
-    QSqlRelationalTableModel *model;
+    //QSqlRelationalTableModel *model;
+    TableModel * model;
+
     int authorIdx, genreIdx;
 
     void createMenuBar();

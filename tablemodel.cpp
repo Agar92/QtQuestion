@@ -81,19 +81,16 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
 bool TableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if(index.column() < 1 || index.column() > 4) return false;
+
     QModelIndex primaryKeyIndex = QSqlQueryModel::index(index.row(), 0);
     int id = data(primaryKeyIndex).toInt();
-    clear();
 
     bool ok = true;
     if(index.column() == 1)
         ok = setTitle(id, value.toString());
-    /*
-    else {
-        ok = setLastName(id, value.toString());
-    }
+    else
+        return QSqlRelationalTableModel::setData(index, value.toString());
     refresh();
-    */
     return ok;
 }
 
@@ -105,3 +102,15 @@ bool TableModel::setTitle(int id, const QString &title)
     query.addBindValue(id);
     return query.exec();
 }
+
+void TableModel::refresh()
+{
+    QSqlQuery q;
+    q.exec("select * from books");
+    setHeaderData(fieldIndex("author"), Qt::Horizontal, tr("Author Name"));
+    setHeaderData(fieldIndex("genre"), Qt::Horizontal, tr("Genre"));
+    setHeaderData(fieldIndex("title"), Qt::Horizontal, tr("Title"));
+    setHeaderData(fieldIndex("year"), Qt::Horizontal, tr("Year"));
+    setHeaderData(fieldIndex("rating"), Qt::Horizontal, tr("Rating"));
+}
+

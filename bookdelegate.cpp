@@ -16,14 +16,6 @@ void BookDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
         opt.rect.adjust(0, 0, -1, -1);
         QSqlRelationalDelegate::paint(painter, opt, index);
     }
-    else if(index.column() == 3)
-    {
-        QStyleOptionViewItem opt;
-        opt.palette.setColor(
-            QPalette::Base,
-            QColor(255, 0, 0));
-        QSqlRelationalDelegate::paint(painter, opt, index);
-    }
     else {
         const QAbstractItemModel *model = index.model();
         QPalette::ColorGroup cg = (option.state & QStyle::State_Enabled) ?
